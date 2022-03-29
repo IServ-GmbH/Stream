@@ -247,6 +247,28 @@ class Horde_Stream_TempString extends Horde_Stream_Temp
 
     /* Serializable methods. */
 
+    public function __serialize(): array
+    {
+        if ($this->_string) {
+            return array(
+                $this->_string,
+                $this->_params
+            );
+        }
+
+        return parent::__serialize();
+    }
+
+    public function __unserialize(array $data): void
+    {
+        if ($data[0] instanceof Horde_Stream_String) {
+            $this->_string = $data[0];
+            $this->_params = $data[1];
+        } else {
+            parent::__unserialize($data);
+        }
+    }
+
     /**
      */
     public function serialize()
